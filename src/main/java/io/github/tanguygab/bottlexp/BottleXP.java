@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -46,6 +47,7 @@ public class BottleXP extends JavaPlugin implements Listener {
             meta.setCustomModelData(getConfig().getInt("item.model-data",0));
             java.awt.Color color = java.awt.Color.decode("#"+getConfig().getString("item.color","00FF00"));
             meta.setColor(Color.fromRGB(color.getRed(),color.getGreen(),color.getBlue()));
+            meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
             bottle.setItemMeta(meta);
         }
 
