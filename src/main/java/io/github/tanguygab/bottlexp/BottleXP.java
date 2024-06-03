@@ -8,12 +8,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BottleXP extends JavaPlugin implements Listener {
@@ -30,6 +32,7 @@ public class BottleXP extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        reloadConfig();
 
         NO_PERMISSION = getString("no-permission","&cYou don't have permission to use this command.");
         NOT_A_NUMBER = getString("not-a-number","&cPlease enter a valid number.");
@@ -49,6 +52,11 @@ public class BottleXP extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this,this);
     }
 
+    @Override
+    public void onDisable() {
+        HandlerList.unregisterAll((Plugin) this);
+    }
+
     private String getString(String path, String def) {
         return color(getConfig().getString("messages."+path, def));
     }
@@ -59,6 +67,15 @@ public class BottleXP extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+        if (args.length > 0 && args[0].equalsIgnoreCase("reload") && sender.hasPermission("bottlexp.reload")) {
+            onDisable();
+            onEnable();
+            sender.sendMessage(ChatColor.GREEN+"Plugin reloaded!");
+            return true;
+        }
+
+
         if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command.");
             return true;
