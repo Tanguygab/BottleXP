@@ -2,7 +2,6 @@ messages:
   no-permission: "&cYou don't have permission to use this command."
   not-a-number: "&cPlease enter a valid number."
   success: "&aYou have received an XP bottle with &b%xp% &aXP."
-  invalid-usage: "&cUsage: /bottle <levels>"
   not-enough-levels: "&cYou don't have enough levels!"
 item:
   name: "&6XP Bottle"

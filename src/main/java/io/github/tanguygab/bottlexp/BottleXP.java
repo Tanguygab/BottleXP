@@ -22,7 +22,6 @@ public class BottleXP extends JavaPlugin implements Listener {
 
     private String NO_PERMISSION;
     private String NOT_A_NUMBER;
-    private String INVALID_USAGE;
     private String SUCCESS;
     private String NOT_ENOUGH_LEVELS;
 
@@ -34,7 +33,6 @@ public class BottleXP extends JavaPlugin implements Listener {
 
         NO_PERMISSION = getString("no-permission","&cYou don't have permission to use this command.");
         NOT_A_NUMBER = getString("not-a-number","&cPlease enter a valid number.");
-        INVALID_USAGE = getString("invalid-usage","&cUsage: /bottle <levels>");
         SUCCESS = getString("success","&aYou have received an XP bottle with &b%xp% &aXP.");
         NOT_ENOUGH_LEVELS = getString("not-enough-levels","&cYou don't have enough levels!");
 
@@ -71,25 +69,17 @@ public class BottleXP extends JavaPlugin implements Listener {
             return true;
         }
 
-        if (args.length < 1) {
-            sender.sendMessage(INVALID_USAGE);
-            return true;
-        }
-
-        if (player.getLevel() < 1) {
-            sender.sendMessage(NOT_ENOUGH_LEVELS);
-            return true;
-        }
-
         int levels;
-        try {
-            levels = Integer.parseInt(args[0]);
-        } catch (NumberFormatException e) {
-            sender.sendMessage(NOT_A_NUMBER);
-            return true;
-        }
+        if (args.length > 0) {
+            try {
+                levels = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(NOT_A_NUMBER);
+                return true;
+            }
+        } else levels = player.getLevel();
 
-        if (player.getLevel() < levels) {
+        if (player.getLevel() < levels || levels == 0) {
             sender.sendMessage(NOT_ENOUGH_LEVELS);
             return true;
         }
@@ -121,7 +111,7 @@ public class BottleXP extends JavaPlugin implements Listener {
         int xp = 0;
 
         while (levels > 0) {
-            int levelXp = getExperienceAtLevel(player.getLevel()-1);
+            int levelXp = getExperienceAtLevel(player.getLevel());
             xp += levelXp;
             player.giveExp(-levelXp);
             --levels;

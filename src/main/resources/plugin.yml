@@ -2,13 +2,11 @@ name: BottleXP
 version: 1.0
 main: io.github.tanguygab.bottlexp.BottleXP
 api-version: 1.20
+author: Tanguygab
+description: Adds a simple /bottlexp <levels> command to put all your XP in a bottle
 commands:
   bottlexp:
     description: Give XP bottles based on levels.
     usage: /bottlexp <levels>
     permission: bottlexp.use
     aliases: [bottle]
-permissions:
-  bottlexp.use:
-    description: Allows the use of /bottlexp command.
-    default: true
