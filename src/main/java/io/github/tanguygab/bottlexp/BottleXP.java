@@ -123,7 +123,7 @@ public class BottleXP extends JavaPlugin implements Listener {
     }
 
     private String parseString(String string, int xp) {
-        return string.replace("xp",String.valueOf(xp))
+        return string.replace("%xp%",String.valueOf(xp))
                 .replace("%levels%",String.valueOf(getLevelsFromExperience(xp)));
     }
 
