@@ -47,7 +47,11 @@ public class BottleXP extends JavaPlugin implements Listener {
             meta.setCustomModelData(getConfig().getInt("item.model-data",0));
             java.awt.Color color = java.awt.Color.decode("#"+getConfig().getString("item.color","00FF00"));
             meta.setColor(Color.fromRGB(color.getRed(),color.getGreen(),color.getBlue()));
-            meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+            try {
+                meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+            } catch (Exception ignored) {
+                meta.addItemFlags(ItemFlag.valueOf("HIDE_POTION_EFFECTS"));
+            }
             bottle.setItemMeta(meta);
         }
 
