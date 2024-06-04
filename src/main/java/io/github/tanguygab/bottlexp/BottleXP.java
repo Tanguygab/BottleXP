@@ -110,16 +110,21 @@ public class BottleXP extends JavaPlugin implements Listener {
 
         ItemStack bottle = this.bottle.clone();
         ItemMeta meta = bottle.getItemMeta();
-        meta.setLore(meta.getLore().stream().map(line->line.replace("%xp%", String.valueOf(xp))).toList());
+        meta.setLore(meta.getLore().stream().map(line->parseString(line,xp)).toList());
 
         meta.getPersistentDataContainer().set(EXP_KEY, PersistentDataType.INTEGER, xp);
 
         bottle.setItemMeta(meta);
 
         player.getInventory().addItem(bottle);
-        sender.sendMessage(SUCCESS.replace("%xp%", String.valueOf(xp)));
+        sender.sendMessage(parseString(SUCCESS,xp));
 
         return true;
+    }
+
+    private String parseString(String string, int xp) {
+        return string.replace("xp",String.valueOf(xp))
+                .replace("%levels%",String.valueOf(getLevelsFromExperience(xp)));
     }
 
     // https://github.com/PlaceholderAPI/Player-Expansion/blob/master/src/main/java/com/extendedclip/papi/expansion/player/PlayerUtil.java#L232
@@ -128,6 +133,18 @@ public class BottleXP extends JavaPlugin implements Listener {
         if (level <= 15) return (level << 1) + 7;
         if (level <= 30) return (level * 5) - 38;
         return (level * 9) - 158;
+    }
+
+    // Thanks https://minecraftxpcalculator.com/
+    private int getLevelsFromExperience(int xp) {
+        int levels = 0;
+        while (xp >= 0) {
+            if(levels < 16) xp -= (2 * levels) + 7;
+            else if (levels < 31) xp -= (5 * levels) - 38;
+            else xp -= (9 * levels) - 158;
+            levels++;
+        }
+        return levels-1;
     }
 
     private int takeLevels(Player player, int levels) {
